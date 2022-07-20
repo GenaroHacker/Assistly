@@ -4,19 +4,25 @@
         size: root.width, root.height
 
         GridLayout:
-            cols:2
+            cols:1
 
             Label:
-                text: "Name: "
+                text: "Objetivo del día: "
 
             TextInput:
-                multiline:False
+                multiline:True
 
             Label:
-                text: "Email: "
+                text: "Habito de la semana: "
+
+            TextInput:
+                multiline: False
+
+            Label:
+                text: "Tema del mes: "
 
             TextInput:
                 multiline: False
 
         Button:
-            text: "Submit"
+            text: "Enviar"
