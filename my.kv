@@ -27,8 +27,11 @@
                 multiline: False
 
         Button:
-            text: "Change text of the label"
+            id: my_button
+            text: "Enviar"
+            on_press:root.btn()
             on_release:
                 label_1.text = textinput_1.text
                 textinput_1.text = ""
                 textinput_1.disabled = True
+

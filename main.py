@@ -7,15 +7,12 @@ from kivy.uix.button import Button
 from kivy.uix.widget import Widget
 
 class MyGrid(GridLayout):
-    pass
-
-
-
+    def btn(self):
+        print("hola")
 
 class MyApp(App):
     def build(self):
         return MyGrid()
-
 
 
 if __name__ == "__main__":
