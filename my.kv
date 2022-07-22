@@ -11,6 +11,7 @@
                 text: "Objetivo del día: "
 
             TextInput:
+                id: textinput_1
                 multiline:True
 
             Label:
@@ -28,5 +29,6 @@
         Button:
             text: "Change text of the label"
             on_release:
-                label_1.text = "Text changed by button"
-                label_1.text_size = (label_1.width, None)
+                label_1.text = textinput_1.text
+                textinput_1.text = ""
+                textinput_1.disabled = True
