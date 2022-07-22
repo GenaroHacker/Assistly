@@ -7,6 +7,7 @@
             cols:1
 
             Label:
+                id: label_1
                 text: "Objetivo del día: "
 
             TextInput:
@@ -16,7 +17,7 @@
                 text: "Habito de la semana: "
 
             TextInput:
-                multiline: False
+                multiline: True
 
             Label:
                 text: "Tema del mes: "
@@ -25,4 +26,7 @@
                 multiline: False
 
         Button:
-            text: "Enviar"
+            text: "Change text of the label"
+            on_release:
+                label_1.text = "Text changed by button"
+                label_1.text_size = (label_1.width, None)
