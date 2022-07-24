@@ -1,9 +1,7 @@
-from sql_core import CrearTabla
-from sql_core import InsertarRegistro
-from sql_core import InsertarVariosRegistros
-from sql_core import LeerRegistros
-from sql_core import ActualizarRegistro
-from sql_core import EliminarRegistro
-from sql_core import EjecutarComando
-
-
+from sql_core import CreateTable
+from sql_core import InsertRecord
+from sql_core import InsertSeveralRecords
+from sql_core import ReadRecords
+from sql_core import UpdateRecord
+from sql_core import RemoveRecord
+from sql_core import RunCommand
