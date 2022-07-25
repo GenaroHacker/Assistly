@@ -29,3 +29,8 @@ def get_mondays_in_month():
         if datetime.datetime(year, month, day).weekday() == 0:
             mondays.append(day)
     return mondays
+
+if __name__ == "__main__":
+    print(current_month_days())
+    print(get_current_day())
+    print(get_mondays_in_month())
