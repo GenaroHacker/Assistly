@@ -10,10 +10,10 @@ class MyGrid(GridLayout):
     def btn(self):
         print("hola")
 
-class MyApp(App):
+class architectureApp(App):
     def build(self):
         return MyGrid()
 
 
 if __name__ == "__main__":
-    MyApp().run()
+    architectureApp().run()

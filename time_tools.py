@@ -29,6 +29,3 @@ def get_mondays_in_month():
         if datetime.datetime(year, month, day).weekday() == 0:
             mondays.append(day)
     return mondays
-
-
-print(get_mondays_in_month())
