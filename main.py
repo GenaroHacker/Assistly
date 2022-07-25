@@ -17,13 +17,12 @@ class MyGrid(GridLayout):
     my_button = ObjectProperty(None)
 
     def btn(self):
-        print(self.textinput_month.text)
-        print(self.label_month.text)
-        print(self.textinput_week.text)
-        print(self.label_week.text)
-        print(self.textinput_day.text)
-        print(self.label_day.text)
-        print(self.my_button.text)
+        """
+        if self.textinput_month.text != '':
+            #Estructura de la tabla meses
+            #ID|CURRENT MONTH|THEME
+            InsertRecord("Chronos","INSERT INTO TableMonth VALUES (NULL,'BALL',10,'SPORT')")
+        """
 
 
 class architectureApp(App):
