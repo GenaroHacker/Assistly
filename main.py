@@ -41,11 +41,9 @@ class MyGrid(GridLayout):
     label_day = ObjectProperty(None)
     my_button = ObjectProperty(None)
 
-
-
-
-
-
+    #initialize variables or perform other operations that need to be done after the kv file has been read
+    def on_kv_post(self, base_widget):
+        self.RefreshLabels()
 
     def SetPrioritiesButton(self):
         table_properties = {
@@ -60,10 +58,21 @@ class MyGrid(GridLayout):
                 my_sql_command = txt.format(table = table_properties[i][1], year = time_tools.GetYear(), time_interval = table_properties[i][2], theme = table_properties[i][0])
                 InsertRecord("Chronos", my_sql_command)
 
+        self.RefreshLabels()
 
 
+    def RefreshLabels(self):
+        label_properties = {
+            "month": [self.label_month, "TableMonth", time_tools.GetMonth()],
+            "week": [self.label_week, "TableWeek", time_tools.GetWeek()],
+            "day": [self.label_day, "TableDay", time_tools.GetDayOfTheYear()]
+            }
 
-
+        for i in ["month", "week", "day"]:
+            try:
+                label_properties[i][0].text = ReadLastRecord("Chronos", label_properties[i][1])[3]
+            except IndexError:
+                label_properties[i][0].text = ""
 
 
 
