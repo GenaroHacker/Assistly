@@ -64,26 +64,31 @@ class MyGrid(GridLayout):
     label_day = ObjectProperty(None)
     my_button = ObjectProperty(None)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     def btn(self):
-        if self.textinput_month.text != '' and self.update_month_enabled == True:
-            txt = "INSERT INTO TableMonth VALUES (NULL,{year},{month},'{theme}')"
-            my_sql_command = txt.format(year = time_tools.GetYear(), month = time_tools.GetMonth(), theme = self.textinput_month.text)
-            InsertRecord("Chronos", my_sql_command)
-            self.update_month_enabled = False
+        table_properties = {
+            "month": [self.textinput_month.text, "TableMonth", time_tools.GetMonth()],
+            "week": [self.textinput_week.text, "TableWeek", time_tools.GetWeek()],
+            "day": [self.textinput_day.text, "TableDay", time_tools.GetDayOfTheYear()]
+            }
+
+        for i in ["month", "week", "day"]:
+            if table_properties[i][0] != '' and CheckIfChangesAreAllowed()[i] == True:
+                txt = "INSERT INTO {table} VALUES (NULL,{year},{time_interval},'{theme}')"
+                my_sql_command = txt.format(table = table_properties[i][1], year = time_tools.GetYear(), time_interval = table_properties[i][2], theme = table_properties[i][0])
+                InsertRecord("Chronos", my_sql_command)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
