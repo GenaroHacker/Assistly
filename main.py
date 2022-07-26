@@ -9,6 +9,7 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 
 from kivy.properties import ObjectProperty
+from kivy.properties import NumericProperty
 
 import time_tools
 
@@ -18,9 +19,19 @@ from sql_interface import ReadLastRecord
 from sql_interface import CheckIfChangesAreAllowed
 
 
+
+
+
+
 CreateTableIfNotExist()
 
 
+class MyTextInput(TextInput):
+    max_characters = NumericProperty(0)
+    def insert_text(self, substring, from_undo=False):
+        if len(self.text) > self.max_characters and self.max_characters > 0:
+            substring = ""
+        TextInput.insert_text(self, substring, from_undo)
 
 
 class MyGrid(GridLayout):
@@ -35,6 +46,7 @@ class MyGrid(GridLayout):
     #initialize variables or perform other operations that need to be done after the kv file has been read
     def on_kv_post(self, base_widget):
         self.RefreshLabels()
+
 
     def SendButton(self):
         table_properties = {
@@ -64,8 +76,6 @@ class MyGrid(GridLayout):
                 label_properties[i][0].text = ReadLastRecord("Chronos", label_properties[i][1])[3]
             except IndexError:
                 label_properties[i][0].text = ""
-
-
 
 
 
