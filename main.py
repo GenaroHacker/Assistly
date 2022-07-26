@@ -6,6 +6,11 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 from kivy.uix.widget import Widget
 from kivy.properties import ObjectProperty
+from sql_interface import CreateTableIfNotExist
+
+
+CreateTableIfNotExist()
+
 
 class MyGrid(GridLayout):
     textinput_month = ObjectProperty(None)

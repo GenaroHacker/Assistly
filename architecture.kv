@@ -1,4 +1,7 @@
 <MyGrid>
+    cols:1
+    size: root.width, root.height
+
     label_month: label_month
     textinput_month: textinput_month
     label_week: label_week
@@ -7,37 +10,33 @@
     textinput_day: textinput_day
     my_button: my_button
 
-    GridLayout:
-        cols:1
-        size: root.width, root.height
-        
-        Label:
-            id: label_month
-            text: "Tema del mes: "
+    Label:
+        id: label_month
+        text: "Tema del mes: "
 
-        TextInput:
-            id: textinput_month
-            multiline:True
+    TextInput:
+        id: textinput_month
+        multiline:True
 
-        Label:
-            id: label_week
-            text: "Habito de la semana: "
+    Label:
+        id: label_week
+        text: "Habito de la semana: "
 
-        TextInput:
-            id: textinput_week
-            multiline: True
+    TextInput:
+        id: textinput_week
+        multiline: True
 
-        Label:
-            id: label_day
-            text: "Objetivo del día: "
+    Label:
+        id: label_day
+        text: "Objetivo del día: "
 
-        TextInput:
-            id: textinput_day
-            multiline: True
+    TextInput:
+        id: textinput_day
+        multiline: True
 
-        Button:
-            id: my_button
-            width: root.width
-            text: "Send"
-            on_press:root.btn()
+    Button:
+        id: my_button
+        width: root.width
+        text: "Send"
+        on_press:root.btn()
 
