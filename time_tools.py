@@ -12,6 +12,7 @@ def GetYear():
 def GetDayOfTheYear():
     return datetime.datetime.now().timetuple().tm_yday
 
+    
 
 if __name__ == "__main__":
     print(GetWeek())
