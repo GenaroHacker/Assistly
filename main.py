@@ -14,7 +14,7 @@ import time_tools
 
 from sql_interface import CreateTableIfNotExist
 from sql_interface import InsertRecord
-
+from sql_interface import ReadLastRecord
 
 
 
@@ -40,7 +40,24 @@ class MyGrid(GridLayout):
     label_day = ObjectProperty(None)
     my_button = ObjectProperty(None)
 
+
+
     update_month_enabled = False
+    last_month_record = (None, None, None, None)
+    try:
+        last_month_record = ReadLastRecord("Chronos", "TableMonth")
+    except IndexError:
+        #There is no record in the table
+        print("There is no record in the table")
+        update_month_enabled = True
+    if last_month_record[1] == time_tools.GetYear() and last_month_record[2] == time_tools.GetMonth():
+        #We have a record for this month
+        print("We have a record for this month")
+        update_month_enabled = False
+    else:
+        #We don't have a record for this month
+        print("We don't have a record for this month")
+        update_month_enabled = True
 
 
 
@@ -49,6 +66,7 @@ class MyGrid(GridLayout):
             txt = "INSERT INTO TableMonth VALUES (NULL,{year},{month},'{theme}')"
             my_sql_command = txt.format(year = time_tools.GetYear(), month = time_tools.GetMonth(), theme = self.textinput_month.text)
             InsertRecord("Chronos", my_sql_command)
+            self.update_month_enabled = False
 
 
 
