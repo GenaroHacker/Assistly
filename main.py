@@ -15,7 +15,7 @@ import time_tools
 from sql_interface import CreateTableIfNotExist
 from sql_interface import InsertRecord
 from sql_interface import ReadLastRecord
-
+from sql_interface import CheckIfChangesAreAllowed
 
 
 
@@ -23,30 +23,7 @@ from sql_interface import ReadLastRecord
 CreateTableIfNotExist()
 
 
-def CheckIfChangesAreAllowed():
-    update_permissions = {"month": False, "week": False, "day": False}
 
-    table_properties = {
-        "month": ["TableMonth", time_tools.GetMonth()],
-        "week": ["TableWeek", time_tools.GetWeek()],
-        "day": ["TableDay", time_tools.GetDayOfTheYear()]
-        }
-
-    for i in ["month", "week", "day"]:
-        last_record = (None, None, None, None)
-        try:
-            last_record = ReadLastRecord("Chronos", table_properties[i][0])
-        except IndexError:
-            #There is no record in the table
-            update_permissions[i] = True
-        if last_record[1] == time_tools.GetYear() and last_record[2] == table_properties[i][1]:
-            #We have a record for this table
-            update_permissions[i] = False
-        else:
-            #We don't have a record for this table
-            update_permissions[i] = True
-
-    return update_permissions
 print(CheckIfChangesAreAllowed())
 
 
@@ -64,7 +41,13 @@ class MyGrid(GridLayout):
     label_day = ObjectProperty(None)
     my_button = ObjectProperty(None)
 
-    def btn(self):
+
+
+
+
+
+
+    def SetPrioritiesButton(self):
         table_properties = {
             "month": [self.textinput_month.text, "TableMonth", time_tools.GetMonth()],
             "week": [self.textinput_week.text, "TableWeek", time_tools.GetWeek()],
