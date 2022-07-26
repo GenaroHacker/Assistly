@@ -18,16 +18,7 @@ from sql_interface import ReadLastRecord
 from sql_interface import CheckIfChangesAreAllowed
 
 
-
-
 CreateTableIfNotExist()
-
-
-
-print(CheckIfChangesAreAllowed())
-
-
-
 
 
 
@@ -45,7 +36,7 @@ class MyGrid(GridLayout):
     def on_kv_post(self, base_widget):
         self.RefreshLabels()
 
-    def SetPrioritiesButton(self):
+    def SendButton(self):
         table_properties = {
             "month": [self.textinput_month.text, "TableMonth", time_tools.GetMonth()],
             "week": [self.textinput_week.text, "TableWeek", time_tools.GetWeek()],
@@ -73,18 +64,6 @@ class MyGrid(GridLayout):
                 label_properties[i][0].text = ReadLastRecord("Chronos", label_properties[i][1])[3]
             except IndexError:
                 label_properties[i][0].text = ""
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
