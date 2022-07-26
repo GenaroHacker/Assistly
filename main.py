@@ -23,7 +23,31 @@ from sql_interface import ReadLastRecord
 CreateTableIfNotExist()
 
 
+def CheckIfChangesAreAllowed():
+    update_permissions = {"month": False, "week": False, "day": False}
 
+    table_properties = {
+        "month": ["TableMonth", time_tools.GetMonth()],
+        "week": ["TableWeek", time_tools.GetWeek()],
+        "day": ["TableDay", time_tools.GetDayOfTheYear()]
+        }
+
+    for i in ["month", "week", "day"]:
+        last_record = (None, None, None, None)
+        try:
+            last_record = ReadLastRecord("Chronos", table_properties[i][0])
+        except IndexError:
+            #There is no record in the table
+            update_permissions[i] = True
+        if last_record[1] == time_tools.GetYear() and last_record[2] == table_properties[i][1]:
+            #We have a record for this table
+            update_permissions[i] = False
+        else:
+            #We don't have a record for this table
+            update_permissions[i] = True
+
+    return update_permissions
+print(CheckIfChangesAreAllowed())
 
 
 
@@ -46,31 +70,6 @@ class MyGrid(GridLayout):
 
 
 
-
-
-    update_permissions = {"month": False, "week": False, "day": False}
-
-    time_intervals_variables = {
-        "month": ["TableMonth", time_tools.GetMonth()],
-        "week": ["TableWeek", time_tools.GetWeek()],
-        "day": ["TableDay", time_tools.GetDayOfTheYear()]
-        }
-
-    for i in ["month", "week", "day"]:
-        last_record = (None, None, None, None)
-        try:
-            last_record = ReadLastRecord("Chronos", time_intervals_variables[i][0])
-        except IndexError:
-            #There is no record in the table
-            update_permissions[i] = True
-        if last_record[1] == time_tools.GetYear() and last_record[2] == time_intervals_variables[i][1]:
-            #We have a record for this table
-            update_permissions[i] = False
-        else:
-            #We don't have a record for this table
-            update_permissions[i] = True
-
-    print(update_permissions)
 
 
 
