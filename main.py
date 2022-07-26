@@ -22,13 +22,15 @@ class MyGrid(GridLayout):
     my_button = ObjectProperty(None)
 
     def btn(self):
-        """
-        if self.textinput_month.text != '':
-            #Estructura de la tabla meses
-            #ID|CURRENT MONTH|THEME
-            InsertRecord("Chronos","INSERT INTO TableMonth VALUES (NULL,'BALL',10,'SPORT')")
-        """
+        import time_tools
+        from sql_interface import InsertRecord
 
+        if self.textinput_month.text != '':
+            txt = "INSERT INTO TableMonth VALUES (NULL,{year},{month},'{theme}')"
+            my_sql_command = txt.format(year = time_tools.GetYear(), month = time_tools.GetMonth(), theme = self.textinput_month.text)
+
+
+            InsertRecord("Chronos", my_sql_command)
 
 class architectureApp(App):
     def build(self):
