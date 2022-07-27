@@ -1,4 +1,19 @@
-<MyGrid>
+<ScrollView>:
+    canvas:
+        Color:
+            rgb: 1, 0, 0
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+<GridLayout>:
+    canvas:
+        Color:
+            rgb: 1, 1, 0
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
     cols:1
     size: root.width, root.height
 
@@ -13,36 +28,42 @@
     Label:
         id: label_month
         text: ""
+        size_hint: root.widgets_heigth, None
 
     MyTextInput:
         id: textinput_month
         multiline:True
         hint_text: "Month theme"
         max_characters:70
+        size_hint: root.widgets_heigth, None
 
     Label:
         id: label_week
         text: ""
+        size_hint: root.widgets_heigth, None
 
     MyTextInput:
         id: textinput_week
         multiline: True
         hint_text: "Week habit"
         max_characters:70
+        size_hint: root.widgets_heigth, None
 
     Label:
         id: label_day
         text: ""
+        size_hint: root.widgets_heigth, None
 
     MyTextInput:
         id: textinput_day
         multiline: True
         hint_text: "Day goal"
         max_characters:70
+        size_hint: root.widgets_heigth, None
 
     Button:
         id: my_button
         width: root.width
         text: "Send"
         on_press:root.SendButton()
-
+        size_hint: root.widgets_heigth, None

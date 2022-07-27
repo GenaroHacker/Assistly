@@ -9,6 +9,7 @@ from sql_interface import CheckIfChangesAreAllowed
 
 
 class MyGrid(GridLayout):
+    widgets_heigth = 300
     textinput_month = ObjectProperty(None)
     label_month = ObjectProperty(None)
     textinput_week = ObjectProperty(None)
