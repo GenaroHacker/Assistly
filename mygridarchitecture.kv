@@ -1,7 +1,7 @@
 <ScrollView>:
     canvas:
         Color:
-            rgb: 0, 0.46, 0.74
+            rgb: 0, 0.46, 1
         Rectangle:
             pos: self.pos
             size: self.size
@@ -9,7 +9,7 @@
 <GridLayout>:
     canvas:
         Color:
-            rgb: 0, 0.46, 0.74
+            rgb: 0, 0.46, 1
         Rectangle:
             pos: self.pos
             size: self.size
@@ -25,6 +25,7 @@
     textinput_day: textinput_day
     my_button: my_button
 
+
     Label:
         id: label_month
         text: ""
@@ -34,13 +35,11 @@
         padding: 20, 15
         font_name: "Tahoma.ttf"
         font_size: 16
-        outline_width: 1
-        outline_color: 0, 0, 0, 1
 
     MyTextInput:
         id: textinput_month
         multiline:True
-        hint_text: "Month theme"
+        hint_text: "Monthly theme"
         max_characters:80
         size_hint: root.widgets_heigth, None
 
@@ -53,13 +52,11 @@
         padding: 20, 15
         font_name: "Tahoma.ttf"
         font_size: 16
-        outline_width: 1
-        outline_color: 0, 0, 0, 1
 
     MyTextInput:
         id: textinput_week
         multiline: True
-        hint_text: "Week habit"
+        hint_text: "Weekly habit"
         max_characters:70
         size_hint: root.widgets_heigth, None
 
@@ -72,19 +69,19 @@
         padding: 20, 15
         font_name: "Tahoma.ttf"
         font_size: 16
-        outline_width: 1
-        outline_color: 0, 0, 0, 1
 
     MyTextInput:
         id: textinput_day
         multiline: True
-        hint_text: "Day goal"
+        hint_text: "Daily goal"
         max_characters:70
         size_hint: root.widgets_heigth, None
 
     Button:
         id: my_button
         width: root.width
-        text: "Send"
+        text: "Submit"
         on_press:root.SendButton()
         size_hint: root.widgets_heigth, None
+        background_color: 0, 0.4, 1, 1
+        font_name: "Tahoma.ttf"
