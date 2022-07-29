@@ -52,7 +52,16 @@ class MyGrid(GridLayout):
                 text_for_label = [line for line in text_for_label if line.strip()]
                 text_for_label = '\n'.join(text_for_label)
 
-                label_properties[i][0].text = text_for_label
+                if i == "month":
+                    label_properties[i][0].text = "Theme:\n" + text_for_label
+    
+                if i == "week":
+                    label_properties[i][0].text = "Habit:\n" + text_for_label
+
+                if i == "day":
+                    label_properties[i][0].text = "Goal:\n" + text_for_label
+
+
                 #If the record is not the same as the current time, then the record is outdated
                 if time_tools.GetYear() != ReadLastRecord("Chronos", label_properties[i][1])[1] or label_properties[i][2] != ReadLastRecord("Chronos", label_properties[i][1])[2]:
                     label_properties[i][0].text = ""
