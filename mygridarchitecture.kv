@@ -33,8 +33,6 @@
         text_size: root.width, None
         size: self.texture_size
         padding: 20, 15
-        font_name: "OpenSans-SemiBold.ttf"
-        font_size: 16
 
     MyTextInput:
         id: textinput_month
@@ -42,7 +40,6 @@
         hint_text: "Monthly theme"
         max_characters:80
         size_hint: root.widgets_heigth, None
-        font_name: "OpenSans-SemiBold.ttf"
 
     Label:
         id: label_week
@@ -51,8 +48,6 @@
         text_size: root.width, None
         size: self.texture_size
         padding: 20, 15
-        font_name: "OpenSans-SemiBold.ttf"
-        font_size: 16
 
     MyTextInput:
         id: textinput_week
@@ -60,7 +55,6 @@
         hint_text: "Weekly habit"
         max_characters:70
         size_hint: root.widgets_heigth, None
-        font_name: "OpenSans-SemiBold.ttf"
 
     Label:
         id: label_day
@@ -69,8 +63,6 @@
         text_size: root.width, None
         size: self.texture_size
         padding: 20, 15
-        font_name: "OpenSans-SemiBold.ttf"
-        font_size: 16
 
     MyTextInput:
         id: textinput_day
@@ -78,7 +70,6 @@
         hint_text: "Daily goal"
         max_characters:70
         size_hint: root.widgets_heigth, None
-        font_name: "OpenSans-SemiBold.ttf"
 
     Button:
         id: my_button
@@ -87,7 +78,6 @@
         on_press:root.SendButton()
         size_hint: root.widgets_heigth, None
         background_color: 0, 0.4, 1, 1
-        font_name: "OpenSans-SemiBold.ttf"
 
 <CustomPopupMonth>:
     size_hint: 0.8, .5
@@ -103,7 +93,6 @@
                 size: self.size
         Label:
             text: "You have already set a theme for the current month"
-            font_size: 16
             halign: "center"
             text_size: root.width, None
             size: self.texture_size
@@ -127,7 +116,6 @@
                 size: self.size
         Label:
             text: "You have already set a habit for this week"
-            font_size: 16
             halign: "center"
             text_size: root.width, None
             size: self.texture_size
@@ -151,7 +139,6 @@
                 size: self.size
         Label:
             text: "You have already set a goal for today"
-            font_size: 16
             halign: "center"
             text_size: root.width, None
             size: self.texture_size

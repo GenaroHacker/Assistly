@@ -48,6 +48,12 @@ class MyGrid(GridLayout):
                 txt = "INSERT INTO {table} VALUES (NULL,{year},{time_interval},'{theme}')"
                 my_sql_command = txt.format(table = table_properties[i][1], year = time_tools.GetYear(), time_interval = table_properties[i][2], theme = table_properties[i][0])
                 InsertRecord("Chronos", my_sql_command)
+                if i == "month":
+                    self.textinput_month.text = ""
+                if i == "week":
+                    self.textinput_week.text = ""
+                if i == "day":
+                    self.textinput_day.text = ""
 
         self.RefreshLabels()
 
