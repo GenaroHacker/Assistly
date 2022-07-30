@@ -9,7 +9,13 @@ from kivy.lang import Builder
 
 CreateTableIfNotExist()
 
-class CustomPopup(Popup):
+class CustomPopupMonth(Popup):
+    pass
+
+class CustomPopupWeek(Popup):
+    pass
+
+class CustomPopupDay(Popup):
     pass
 
 class mygridarchitectureApp(App):
@@ -21,8 +27,16 @@ class mygridarchitectureApp(App):
         root.add_widget(layout)
         return root
 
-    def show_popup(self):
-        p = CustomPopup()
+    def ShowPopupMonth(self):
+        p = CustomPopupMonth()
+        p.open()
+
+    def ShowPopupWeek(self):
+        p = CustomPopupWeek()
+        p.open()
+
+    def ShowPopupDay(self):
+        p = CustomPopupDay()
         p.open()
 
 if __name__ == "__main__":

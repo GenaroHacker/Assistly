@@ -86,10 +86,74 @@
         background_color: 0, 0.4, 1, 1
         font_name: "Tahoma.ttf"
 
-<CustomPopup>:
-    size_hint: .5, .5
+<CustomPopupMonth>:
+    size_hint: 0.8, .5
     auto_dismiss: False
-    title: 'Hello world'
-    Button:
-        text: 'Click me to dismiss'
-        on_press: root.dismiss()
+    title: 'Unable to set a new theme'
+    GridLayout:
+        cols: 1
+        canvas:
+            Color:
+                rgb: 0, 0.46, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        Label:
+            text: "You have already set a theme for the current month"
+            font_size: 16
+            halign: "center"
+            text_size: root.width, None
+            size: self.texture_size
+            padding: 20, 15
+        Button:
+            text: 'Close'
+            on_press: root.dismiss()
+            background_color: 0, 0.4, 1, 1
+
+<CustomPopupWeek>:
+    size_hint: 0.8, .5
+    auto_dismiss: False
+    title: 'Unable to set a new habit'
+    GridLayout:
+        cols: 1
+        canvas:
+            Color:
+                rgb: 0, 0.46, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        Label:
+            text: "You have already set a habit for this week"
+            font_size: 16
+            halign: "center"
+            text_size: root.width, None
+            size: self.texture_size
+            padding: 20, 15
+        Button:
+            text: 'Close'
+            on_press: root.dismiss()
+            background_color: 0, 0.4, 1, 1
+
+<CustomPopupDay>:
+    size_hint: 0.8, .5
+    auto_dismiss: False
+    title: 'Unable to set a new goal'
+    GridLayout:
+        cols: 1
+        canvas:
+            Color:
+                rgb: 0, 0.46, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        Label:
+            text: "You have already set a goal for today"
+            font_size: 16
+            halign: "center"
+            text_size: root.width, None
+            size: self.texture_size
+            padding: 20, 15
+        Button:
+            text: 'Close'
+            on_press: root.dismiss()
+            background_color: 0, 0.4, 1, 1

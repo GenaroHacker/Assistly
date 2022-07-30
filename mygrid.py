@@ -26,7 +26,7 @@ class MyGrid(GridLayout):
         self.RefreshLabels()
 
     def SendButton(self):
-        App.get_running_app().show_popup()
+        
         table_properties = {
             "month": [self.textinput_month.text, "TableMonth", time_tools.GetMonth()],
             "week": [self.textinput_week.text, "TableWeek", time_tools.GetWeek()],
@@ -34,6 +34,16 @@ class MyGrid(GridLayout):
             }
 
         for i in ["month", "week", "day"]:
+            if table_properties[i][0] != '' and CheckIfChangesAreAllowed()[i] == False:
+                if i == "month":
+                    App.get_running_app().ShowPopupMonth()
+                    self.textinput_month.text = ""
+                if i == "week":
+                    App.get_running_app().ShowPopupWeek()
+                    self.textinput_week.text = ""
+                if i == "day":
+                    App.get_running_app().ShowPopupDay()
+                    self.textinput_day.text = ""
             if table_properties[i][0] != '' and CheckIfChangesAreAllowed()[i] == True:
                 txt = "INSERT INTO {table} VALUES (NULL,{year},{time_interval},'{theme}')"
                 my_sql_command = txt.format(table = table_properties[i][1], year = time_tools.GetYear(), time_interval = table_properties[i][2], theme = table_properties[i][0])
