@@ -7,6 +7,9 @@ from sql_interface import InsertRecord
 from sql_interface import ReadLastRecord
 from sql_interface import CheckIfChangesAreAllowed
 
+from kivy.app import App
+
+
 
 class MyGrid(GridLayout):
     widgets_heigth = 300
@@ -23,6 +26,7 @@ class MyGrid(GridLayout):
         self.RefreshLabels()
 
     def SendButton(self):
+        App.get_running_app().show_popup()
         table_properties = {
             "month": [self.textinput_month.text, "TableMonth", time_tools.GetMonth()],
             "week": [self.textinput_week.text, "TableWeek", time_tools.GetWeek()],
