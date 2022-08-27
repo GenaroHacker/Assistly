@@ -26,6 +26,13 @@ def CreateTableIfNotExist():
                     """ + i[1] + """ VARCHAR(50)"""
 
             CreateTable("Chronos",i[2],columns)
+
+        columns_streak = """
+                    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                    STREAK INTEGER"""
+        CreateTable("Chronos","TableStreak",columns_streak)
+        InsertRecord("Chronos","INSERT INTO TableStreak VALUES (NULL,0)")
+        InsertRecord("Chronos","INSERT INTO TableDay VALUES (NULL,2010,1,'')")
     except sqlite3.OperationalError:
         pass
 

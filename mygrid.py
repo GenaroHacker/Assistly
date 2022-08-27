@@ -6,6 +6,7 @@ from mytextinput import MyTextInput
 from sql_interface import InsertRecord
 from sql_interface import ReadLastRecord
 from sql_interface import CheckIfChangesAreAllowed
+from sql_interface import UpdateRecord
 
 from kivy.app import App
 
@@ -47,6 +48,7 @@ class MyGrid(GridLayout):
             if table_properties[i][0] != '' and CheckIfChangesAreAllowed()[i] == True:
                 txt = "INSERT INTO {table} VALUES (NULL,{year},{time_interval},'{theme}')"
                 my_sql_command = txt.format(table = table_properties[i][1], year = time_tools.GetYear(), time_interval = table_properties[i][2], theme = table_properties[i][0])
+                last_goal_date = ReadLastRecord("Chronos","TableDay")[1:3]
                 InsertRecord("Chronos", my_sql_command)
                 if i == "month":
                     self.textinput_month.text = ""
@@ -54,6 +56,11 @@ class MyGrid(GridLayout):
                     self.textinput_week.text = ""
                 if i == "day":
                     self.textinput_day.text = ""
+                    if last_goal_date == (time_tools.GetYear(), time_tools.GetYesterday()):
+                        UpdateRecord("Chronos","UPDATE TableStreak SET STREAK = STREAK + 1")
+                    else:
+                        UpdateRecord("Chronos","UPDATE TableStreak SET STREAK = 1")
+
 
         self.RefreshLabels()
 
@@ -88,3 +95,11 @@ class MyGrid(GridLayout):
             except IndexError:
                 #There is no record in the table
                 label_properties[i][0].text = ""
+        
+        #Update streak if it is outdated
+        last_goal_date = ReadLastRecord("Chronos","TableDay")[1:3]
+        max_allowed_date = time_tools.GetDayPlusTwo(last_goal_date)
+        today = (time_tools.GetYear(), time_tools.GetDayOfTheYear())
+        #when today is at least two days after the last goal date the streak is reset
+        if today > max_allowed_date:
+            UpdateRecord("Chronos","UPDATE TableStreak SET STREAK = 0")
