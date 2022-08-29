@@ -24,6 +24,7 @@
     label_day: label_day
     textinput_day: textinput_day
     my_button: my_button
+    label_streak: label_streak
 
 
     Label:
@@ -78,6 +79,15 @@
         on_press:root.SendButton()
         size_hint: root.widgets_heigth, None
         background_color: 0, 0.4, 1, 1
+
+    Label:
+        id: label_streak
+        text: ""
+        size_hint: root.widgets_heigth, None
+        text_size: root.width, None
+        halign: "center"
+        size: self.texture_size
+        padding: 20, 15
 
 <CustomPopupMonth>:
     size_hint: 0.8, .5

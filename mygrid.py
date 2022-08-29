@@ -21,6 +21,7 @@ class MyGrid(GridLayout):
     textinput_day = ObjectProperty(None)
     label_day = ObjectProperty(None)
     my_button = ObjectProperty(None)
+    label_streak = ObjectProperty(None)
 
     #initialize variables or perform other operations that need to be done after the kv file has been read
     def on_kv_post(self, base_widget):
@@ -98,8 +99,8 @@ class MyGrid(GridLayout):
         
         #Update streak if it is outdated
         last_goal_date = ReadLastRecord("Chronos","TableDay")[1:3]
-        max_allowed_date = time_tools.GetDayPlusTwo(last_goal_date)
-        today = (time_tools.GetYear(), time_tools.GetDayOfTheYear())
-        #when today is at least two days after the last goal date the streak is reset
+        max_allowed_date = time_tools.GetDayPlusOne(last_goal_date)[1]
+        today = (time_tools.GetDayOfTheYear())
         if today > max_allowed_date:
             UpdateRecord("Chronos","UPDATE TableStreak SET STREAK = 0")
+        self.label_streak.text = "Streak: " + str(ReadLastRecord("Chronos","TableStreak")[1])
