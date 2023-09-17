@@ -1,7 +1,7 @@
 [app]
 
 # (str) Title of your application
-title = My New Application
+title = Assistly
 
 # (str) Package name
 package.name = myapp
