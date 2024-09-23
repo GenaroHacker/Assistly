@@ -10,17 +10,30 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      # Step to set up Python with a compatible version
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      # Install necessary dependencies
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-dev libffi-dev build-essential
+          pip install cython==0.29.21  # Install Cython with a specific version
+
       # Optional step: List files and directories to debug the workdir path
       - name: List files and directories
         run: ls -R
 
+      # Build the project using Buildozer with a specified NDK version
       - name: Build with Buildozer
-        uses: ArtemSBulgakov/buildozer-action@v1
-        id: buildozer
-        with:
-          workdir: .  # Set the workdir to the root of the repository
-          buildozer_version: stable
+        run: buildozer -v android debug --log-level=2
+        env:
+          ANDROIDNDKVER: r21e  # Specify the NDK version if needed
 
+      # Upload the built artifacts
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
