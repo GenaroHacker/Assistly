@@ -41,3 +41,4 @@ class mygridarchitectureApp(App):
 
 if __name__ == "__main__":
     mygridarchitectureApp().run()
+
