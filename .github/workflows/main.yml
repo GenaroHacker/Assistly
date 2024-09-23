@@ -12,13 +12,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Set up Docker container
+      # Step 2: Set up Docker container and create a non-root user
       - name: Set up Docker container
         run: |
           docker pull ubuntu:20.04
           docker run --name buildozer-container -d -v ${{ github.workspace }}:/workspace -w /workspace ubuntu:20.04 tail -f /dev/null
+          docker exec buildozer-container bash -c "useradd -m builduser && chown -R builduser:builduser /workspace"
 
-      # Step 3: Preconfigure tzdata and install dependencies inside the container
+      # Step 3: Install dependencies inside the container
       - name: Install dependencies in Docker
         run: |
           docker exec buildozer-container bash -c "export DEBIAN_FRONTEND=noninteractive && \
@@ -39,10 +40,10 @@ jobs:
             pip3 install --upgrade pip && \
             pip3 install buildozer cython"
 
-      # Step 4: Build the APK using Buildozer inside the container
+      # Step 4: Build the APK using Buildozer as a non-root user
       - name: Build APK in Docker
         run: |
-          docker exec buildozer-container bash -c "buildozer android debug"
+          docker exec -u builduser buildozer-container bash -c "buildozer android debug"
 
       # Step 5: Copy the APK to the host
       - name: Copy APK to host
