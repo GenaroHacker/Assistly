@@ -1,6 +1,6 @@
 [app]
 
-# (str) Title of the applicationn
+# (str) Title of the applicationnn
 title = Assistly
 
 # (str) Package name
