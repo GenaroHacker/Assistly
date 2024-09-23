@@ -17,7 +17,7 @@ jobs:
         run: |
           docker pull ubuntu:20.04
           docker run --name buildozer-container -d -v ${{ github.workspace }}:/workspace -w /workspace ubuntu:20.04 tail -f /dev/null
-          docker exec buildozer-container bash -c "useradd -m builduser && chown -R builduser:builduser /workspace"
+          docker exec buildozer-container bash -c "useradd -m builduser && mkdir -p /home/builduser/.buildozer/cache && chown -R builduser:builduser /home/builduser/.buildozer && chown -R builduser:builduser /workspace"
 
       # Step 3: Install dependencies inside the container (including wget)
       - name: Install dependencies in Docker
