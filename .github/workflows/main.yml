@@ -1,93 +1,56 @@
-name: 'Kivy App to APK'
-description: 'Convert Kivy app to APK'
+name: Build Android APK
 
-# Define when the workflow should run
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-  workflow_dispatch:
-
-inputs:
-  python-version:
-    description: 'Python version to use'
-    default: '3.8'
-  workdir:
-    default: '.'
-    description: 'Working directory'
-  buildozer-cmd:
-    default: 'buildozer android debug'
-    description: 'Buildozer command to use'
-
-# Add the branding section
-branding:
-  color: 'green'
-  icon: 'play'
+on: [push]
 
 jobs:
   build:
+    name: Build APK
     runs-on: ubuntu-latest
-    
-    steps:
-      - name: Setup python
-        uses: actions/setup-python@v2
-        with:
-          architecture: x64
-          python-version: ${{ inputs.python-version }}
 
-      - name: Setup Java 17 required by Gradle
+    steps:
+      # Step 1: Check out the repository code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up JDK (Java Development Kit)
+      - name: Set up JDK 11
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'  # or 'zulu','liberica', etc.
-          java-version: '17'
+          distribution: 'adopt'
+          java-version: '11'
 
-      - name: Set JAVA_HOME
+      # Step 3: Install Buildozer and its dependencies
+      - name: Install Buildozer and dependencies
         run: |
-          echo "JAVA_HOME=$JAVA_HOME" >> $GITHUB_ENV
-        shell: bash
-
-      - name: Prepare virtual environment
-        run: |
-          python3 -m venv venv
-          source venv/bin/activate
-          echo "Using Python==$(python --version)"
-        shell: bash
-
-      - name: Install and upgrade dependencies
-        run: |
-          sudo apt update
-          sudo apt install -y git \
-            zip \
-            unzip \
-            openjdk-17-jdk \
+          sudo apt-get update
+          sudo apt-get install -y \
             python3-pip \
-            autoconf \
-            libtool \
-            pkg-config \
-            zlib1g-dev \
-            libncurses5-dev \
-            libncursesw5-dev \
-            libtinfo5 \
-            cmake \
+            python3-setuptools \
+            python3-dev \
+            build-essential \
+            libssl-dev \
             libffi-dev \
-            libssl-dev
-          export PATH=$PATH:~/.local/bin/
-          python3 -m pip install --upgrade \
-            Cython==0.29.33 \
-            buildozer
-        shell: bash
+            git \
+            zip \
+            zlib1g-dev \
+            openjdk-11-jdk
+          pip3 install --upgrade --user pip
+          pip3 install --user buildozer cython
 
-      - name: Install requirements in requirements.txt if it exists
-        run: |
-          if [ -f requirements.txt ]; then
-            python3 -m pip install -r requirements.txt
-          fi
-        shell: bash
+      # Step 4: Add pip's user base binary directory to PATH
+      - name: Update PATH
+        run: echo "${{ github.runner.OS }}"
 
-      - name: Build with Buildozer
+      # Step 5: Build the APK using Buildozer
+      - name: Build APK
+        env:
+          PATH: ~/.local/bin:${{ env.PATH }}
         run: |
-          ${{ inputs.buildozer-cmd }}
-        shell: bash 
+          buildozer android debug
+
+      # Step 6: Upload the generated APK as an artifact
+      - name: Upload APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: MyApp.apk
+          path: bin/*.apk
