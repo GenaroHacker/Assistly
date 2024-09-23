@@ -4,17 +4,54 @@ on: [push]
 
 jobs:
   build:
-    name: Build APK with Docker
+    name: Build APK
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Check out the repository code
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Build APK using Docker
-        run: |
-          docker run --rm -v ${{ github.workspace }}:/home/user/app -w /home/user/app kivy/buildozer buildozer android debug
+      # Step 2: Install Git
+      - name: Install Git
+        run: sudo apt-get install -y git
 
+      # Step 3: Set up JDK (Java Development Kit)
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+
+      # Step 4: Install Buildozer and its dependencies
+      - name: Install Buildozer and dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            python3-pip \
+            python3-setuptools \
+            python3-dev \
+            build-essential \
+            libssl-dev \
+            libffi-dev \
+            zip \
+            zlib1g-dev \
+            openjdk-11-jdk
+          pip3 install --upgrade --user pip
+          pip3 install --user buildozer cython
+
+      # Step 5: Add pip's user base binary directory to PATH
+      - name: Update PATH
+        run: echo "${{ github.runner.OS }}"
+
+      # Step 6: Build the APK using Buildozer
+      - name: Build APK
+        env:
+          PATH: ~/.local/bin:${{ env.PATH }}
+        run: |
+          buildozer android debug
+
+      # Step 7: Upload the generated APK as an artifact
       - name: Upload APK
         uses: actions/upload-artifact@v3
         with:
