@@ -17,7 +17,7 @@ jobs:
         run: |
           docker pull ubuntu:20.04
           docker run --name buildozer-container -d -v ${{ github.workspace }}:/workspace -w /workspace ubuntu:20.04 tail -f /dev/null
-          docker exec buildozer-container bash -c "useradd -m builduser && mkdir -p /home/builduser/.buildozer/cache && chown -R builduser:builduser /home/builduser/.buildozer && chown -R builduser:builduser /workspace"
+          docker exec buildozer-container bash -c "useradd -m builduser && mkdir -p /home/builduser/.buildozer/android/platform && chown -R builduser:builduser /home/builduser/.buildozer && chown -R builduser:builduser /workspace"
 
       # Step 3: Install dependencies inside the container (including wget)
       - name: Install dependencies in Docker
@@ -50,23 +50,28 @@ jobs:
           rm commandlinetools-linux-8092744_latest.zip && \
           yes | android-sdk/cmdline-tools/bin/sdkmanager --sdk_root=android-sdk 'platform-tools' 'platforms;android-31' 'build-tools;31.0.0'"
 
-      # Step 5: Build the APK using Buildozer as a non-root user
+      # Step 5: Ensure the builduser has the correct permissions
+      - name: Set correct permissions
+        run: |
+          docker exec buildozer-container bash -c "chown -R builduser:builduser /home/builduser/.buildozer/android"
+
+      # Step 6: Build the APK using Buildozer as a non-root user
       - name: Build APK in Docker
         run: |
           docker exec -u builduser buildozer-container bash -c "buildozer android debug"
 
-      # Step 6: Copy the APK to the host
+      # Step 7: Copy the APK to the host
       - name: Copy APK to host
         run: |
           docker cp buildozer-container:/workspace/bin ./bin
 
-      # Step 7: Upload the generated APK as an artifact
+      # Step 8: Upload the generated APK as an artifact
       - name: Upload APK
         uses: actions/upload-artifact@v3
         with:
           name: MyApp.apk
           path: bin/*.apk
 
-      # Step 8: Clean up Docker container
+      # Step 9: Clean up Docker container
       - name: Clean up
         run: docker rm -f buildozer-container
