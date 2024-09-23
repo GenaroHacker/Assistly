@@ -18,10 +18,13 @@ jobs:
           docker pull ubuntu:20.04
           docker run --name buildozer-container -d -v ${{ github.workspace }}:/workspace -w /workspace ubuntu:20.04 tail -f /dev/null
 
-      # Step 3: Install dependencies inside the container
+      # Step 3: Preconfigure tzdata and install dependencies inside the container
       - name: Install dependencies in Docker
         run: |
-          docker exec buildozer-container bash -c "apt-get update && apt-get install -y \
+          docker exec buildozer-container bash -c "export DEBIAN_FRONTEND=noninteractive && \
+          ln -fs /usr/share/zoneinfo/America/New_York /etc/localtime && \
+          echo 'America/New_York' > /etc/timezone && \
+          apt-get update && apt-get install -y \
             python3-pip \
             python3-setuptools \
             python3-dev \
@@ -32,6 +35,7 @@ jobs:
             zip \
             zlib1g-dev \
             openjdk-11-jdk && \
+            dpkg-reconfigure --frontend noninteractive tzdata && \
             pip3 install --upgrade pip && \
             pip3 install buildozer cython"
 
