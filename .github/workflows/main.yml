@@ -16,7 +16,7 @@ jobs:
         with:
           python-version: '3.9'
 
-      # Install necessary dependencies including Buildozer and Cython
+      # Install necessary dependencies including Buildozer, Android SDK, and Cython
       - name: Install Dependencies
         run: |
           sudo apt-get update
@@ -25,6 +25,22 @@ jobs:
           pip install cython==0.29.21  # Install Cython with a specific version
           pip install buildozer          # Install Buildozer
           pip install virtualenv          # Install virtualenv in case it's needed for the environment setup
+          sudo apt-get install -y openjdk-8-jdk  # Install Java Development Kit (required for Android SDK)
+
+      # Accept Android SDK licenses
+      - name: Accept Android SDK Licenses
+        run: |
+          yes | sdkmanager --licenses
+        env:
+          ANDROID_HOME: ${{ github.workspace }}/.buildozer/android/platform/android-sdk
+          PATH: ${{ github.workspace }}/.buildozer/android/platform/android-sdk/tools/bin:$PATH
+
+      # Install specific Android SDK Build-Tools version
+      - name: Install Android SDK Build-Tools
+        run: sdkmanager "build-tools;35.0.0"
+        env:
+          ANDROID_HOME: ${{ github.workspace }}/.buildozer/android/platform/android-sdk
+          PATH: ${{ github.workspace }}/.buildozer/android/platform/android-sdk/tools/bin:$PATH
 
       # Optional step: List files and directories to debug the workdir path
       - name: List files and directories
