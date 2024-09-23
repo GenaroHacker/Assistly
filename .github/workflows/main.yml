@@ -48,7 +48,9 @@ jobs:
           wget https://dl.google.com/android/repository/commandlinetools-linux-8092744_latest.zip && \
           unzip commandlinetools-linux-8092744_latest.zip -d android-sdk && \
           rm commandlinetools-linux-8092744_latest.zip && \
-          yes | android-sdk/cmdline-tools/bin/sdkmanager --sdk_root=android-sdk 'platform-tools' 'platforms;android-31' 'build-tools;31.0.0'"
+          mkdir -p android-sdk/cmdline-tools/latest && \
+          mv android-sdk/cmdline-tools/* android-sdk/cmdline-tools/latest && \
+          yes | android-sdk/cmdline-tools/latest/bin/sdkmanager --sdk_root=android-sdk 'platform-tools' 'platforms;android-31' 'build-tools;31.0.0'"
 
       # Step 5: Ensure the builduser has the correct permissions
       - name: Set correct permissions
