@@ -1,60 +1,45 @@
-name: Build
-on: [push, pull_request]
+name: Build Kivy Android APK
+
+on:
+  push:
+    paths:
+      - 'main.py'
+      - '.github/workflows/build-android.yml'
+      - 'buildozer.spec'
 
 jobs:
-  build-android:
-    name: Build for Android
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-      # Step to set up Python with a compatible version
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v2
         with:
-          python-version: '3.9'
+          python-version: '3.x'
 
-      # Install necessary dependencies including Buildozer, Android SDK, and Cython
-      - name: Install Dependencies
+      - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y python3-dev libffi-dev build-essential
-          pip install --upgrade pip
-          pip install cython==0.29.21  # Install Cython with a specific version
-          pip install buildozer          # Install Buildozer
-          pip install virtualenv          # Install virtualenv in case it's needed for the environment setup
-          sudo apt-get install -y openjdk-8-jdk  # Install Java Development Kit (required for Android SDK)
+          sudo apt-get install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev wget libbz2-dev openjdk-8-jdk
 
-      # Accept Android SDK licenses
-      - name: Accept Android SDK Licenses
+      - name: Setup Java 8
         run: |
-          yes | sdkmanager --licenses
-        env:
-          ANDROID_HOME: ${{ github.workspace }}/.buildozer/android/platform/android-sdk
-          PATH: ${{ github.workspace }}/.buildozer/android/platform/android-sdk/tools/bin:$PATH
+          sudo update-alternatives --set java /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
 
-      # Install specific Android SDK Build-Tools version
-      - name: Install Android SDK Build-Tools
-        run: sdkmanager "build-tools;35.0.0"
-        env:
-          ANDROID_HOME: ${{ github.workspace }}/.buildozer/android/platform/android-sdk
-          PATH: ${{ github.workspace }}/.buildozer/android/platform/android-sdk/tools/bin:$PATH
+      - name: Install Buildozer and Cython
+        run: |
+          pip install buildozer
+          pip install Cython==0.29.36
 
-      # Optional step: List files and directories to debug the workdir path
-      - name: List files and directories
-        run: ls -R
+      - name: Build APK
+        run: |
+          yes | buildozer android debug
 
-      # Build the project using Buildozer with a specified NDK version
-      - name: Build with Buildozer
-        run: buildozer -v android debug --log-level=2
-        env:
-          ANDROIDNDKVER: r21e  # Specify the NDK version if needed
-
-      # Upload the built artifacts
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+      - name: Upload APK
+        uses: actions/upload-artifact@v2
         with:
-          name: package
-          path: main.py
+          name: kivy_app
+          path: bin/*.apk
