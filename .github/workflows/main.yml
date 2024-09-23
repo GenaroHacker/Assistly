@@ -24,7 +24,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev wget libbz2-dev openjdk-8-jdk
-          pip install distutils setuptools wheel
+          pip install setuptools wheel
 
       - name: Setup Java 8
         run: |
