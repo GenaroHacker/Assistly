@@ -1,5 +1,16 @@
 name: 'Kivy App to APK'
 description: 'Convert Kivy app to APK'
+
+# Define when the workflow should run
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
 inputs:
   python-version:
     description: 'Python version to use'
@@ -77,4 +88,4 @@ runs:
     - name: Build with Buildozer
       run: |
         ${{ inputs.buildozer-cmd }}
-      shell: bash
+      shell: bash 
