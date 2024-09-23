@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   build:
-    name: Build APK
+    name: Build APK in Docker
     runs-on: ubuntu-latest
 
     steps:
@@ -12,52 +12,46 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Install Git
-      - name: Install Git
-        run: sudo apt-get install -y git
-
-      # Step 3: Verify Git Installation
-      - name: Verify Git
-        run: git --version
-
-      # Step 4: Set up JDK (Java Development Kit)
-      - name: Set up JDK 11
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'adopt'
-          java-version: '11'
-
-      # Step 5: Install Buildozer and its dependencies
-      - name: Install Buildozer and dependencies
+      # Step 2: Set up Docker container
+      - name: Set up Docker container
         run: |
-          sudo apt-get update
-          sudo apt-get install -y \
+          docker pull ubuntu:20.04
+          docker run --name buildozer-container -d -v ${{ github.workspace }}:/workspace -w /workspace ubuntu:20.04 tail -f /dev/null
+
+      # Step 3: Install dependencies inside the container
+      - name: Install dependencies in Docker
+        run: |
+          docker exec buildozer-container bash -c "apt-get update && apt-get install -y \
             python3-pip \
             python3-setuptools \
             python3-dev \
             build-essential \
             libssl-dev \
             libffi-dev \
+            git \
             zip \
             zlib1g-dev \
-            openjdk-11-jdk
-          pip3 install --upgrade --user pip
-          pip3 install --user buildozer cython
+            openjdk-11-jdk && \
+            pip3 install --upgrade pip && \
+            pip3 install buildozer cython"
 
-      # Step 6: Add pip's user base binary directory to PATH
-      - name: Update PATH
-        run: echo "${{ github.runner.OS }}"
-
-      # Step 7: Build the APK using Buildozer
-      - name: Build APK
-        env:
-          PATH: ~/.local/bin:${{ env.PATH }}
+      # Step 4: Build the APK using Buildozer inside the container
+      - name: Build APK in Docker
         run: |
-          buildozer android debug
+          docker exec buildozer-container bash -c "buildozer android debug"
 
-      # Step 8: Upload the generated APK as an artifact
+      # Step 5: Copy the APK to the host
+      - name: Copy APK to host
+        run: |
+          docker cp buildozer-container:/workspace/bin ./bin
+
+      # Step 6: Upload the generated APK as an artifact
       - name: Upload APK
         uses: actions/upload-artifact@v3
         with:
           name: MyApp.apk
           path: bin/*.apk
+
+      # Step 7: Clean up Docker container
+      - name: Clean up
+        run: docker rm -f buildozer-container
